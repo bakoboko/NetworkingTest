@@ -249,12 +249,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 961bd4643876f24498fd0ac53006e0bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fallSpeedMax: 0
+  keywords:
+  - fire
+  - ice
   moveSpeed: 0.2
   jumpForce: 0.2
   gravity: 0.2
   playerHealth: 0
-  dead: 0
 --- !u!136 &136567273745238764
 CapsuleCollider:
   m_ObjectHideFlags: 1

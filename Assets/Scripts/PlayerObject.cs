@@ -16,10 +16,6 @@ public class PlayerObject : NetworkBehaviour {
         CmdSpawnUnit();
 	}
 
-	void Update ()
-    {
-		
-	}
 
     [Command]
     void CmdSpawnUnit()

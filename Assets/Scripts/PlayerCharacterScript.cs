@@ -1,29 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Windows.Speech;
 using UnityEngine.Networking;
 
 public class PlayerCharacterScript : NetworkBehaviour {
 
     private FPSViewScript mouseLook;
     private CharacterController player;
-    
+
     private Vector3 move = Vector3.zero;
+    private Camera fpsCamera;
     private Vector2 moveInput;
     private Vector2 look;
     private bool jumpTick;
+    private KeywordRecognizer recognizer;
 
-    public float fallSpeedMax;
-    private Camera fpsCamera;
+    private string[] keywords = new string[] { "fire", "water" };
     public float moveSpeed;
     public float jumpForce;
     public float gravity;
     public float playerHealth;
-    public bool dead;
 
-    public static bool paused;
-    public static bool deathMenuActive;
-    public static bool freeMouse;
 
     public override void OnStartAuthority()
     {
@@ -40,12 +38,17 @@ public class PlayerCharacterScript : NetworkBehaviour {
         {
             fpsCamera.gameObject.transform.parent = this.transform;
             fpsCamera.transform.position = player.transform.position;
+            recognizer = new KeywordRecognizer(keywords);
+            recognizer.OnPhraseRecognized += SpeechRecognition;
+            recognizer.Start();
             return;
         }
-    }   
-         
-	
-	void Update ()
+
+
+    }
+
+
+    void Update()
     {
         CheckAuthority();
     }
@@ -61,12 +64,8 @@ public class PlayerCharacterScript : NetworkBehaviour {
         else
         {
             return;
-        }           
+        }
     }
-
-
-
-
 
     void Movement()
     {
@@ -75,7 +74,7 @@ public class PlayerCharacterScript : NetworkBehaviour {
 
         moveInput = new Vector2(horizontal, vertical);
 
-        if(moveInput.sqrMagnitude > 1)
+        if (moveInput.sqrMagnitude > 1)
         {
             moveInput.Normalize();
         }
@@ -103,6 +102,24 @@ public class PlayerCharacterScript : NetworkBehaviour {
 
         player.Move(move);
         mouseLook.UpdateCursorLock();
+    }
+
+    void SpeechRecognition(PhraseRecognizedEventArgs args)
+    {
+        if (transform.parent == isLocalPlayer)
+        {
+            print(args.text);
+            if (args.text == "fire")
+            {
+                GameObject.Find("Cube").GetComponent<MeshRenderer>().material.color = Color.red;
+            }
+            else if (args.text == "water")
+            {
+                GameObject.Find("Cube").GetComponent<MeshRenderer>().material.color = Color.green;
+            }
+        }
+
+
     }
 
     void Rotate()
