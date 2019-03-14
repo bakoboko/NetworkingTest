@@ -9,6 +9,8 @@ TagManager:
   - ExcludeTeleport
   - TeleportIgnore
   - VRKit
+  - Ball
+  - floor
   layers:
   - Default
   - TransparentFX
