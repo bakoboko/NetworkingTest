@@ -14,6 +14,7 @@ public class SpellSystem : NetworkBehaviour {
     private Vector3 wandFirePoint = Vector3.zero;
     private Quaternion wandPointRotation;
 
+    public GameObject castPoint;
     public GameObject pShield;
     private bool shieldExpanding;
     private GameObject Shield;
@@ -26,14 +27,13 @@ public class SpellSystem : NetworkBehaviour {
     void Update ()
     {           
         GetInputs();
-        
     }
 
     private void LightningBolt()
     {
         if (LitMode  && !shieldExpanding)
         {
-            GameObject LitObj = Instantiate(pBolt, gameObject.transform.position, gameObject.transform.rotation);
+            GameObject LitObj = Instantiate(pBolt, castPoint.transform.localPosition, castPoint.transform.localRotation);
             NetworkServer.Spawn(LitObj);
             LitObj.GetComponent<Rigidbody>().AddForce(transform.TransformDirection(Vector3.forward) * LitForce);
             LitMode = false;
@@ -45,7 +45,7 @@ public class SpellSystem : NetworkBehaviour {
     {
         if (!OnceInstance && FireMode && !shieldExpanding)
         {
-            GameObject Ball = Instantiate(pBall, gameObject.transform.position, gameObject.transform.rotation);
+            GameObject Ball = Instantiate(pBall, castPoint.transform.position, castPoint.transform.localRotation);
             NetworkServer.Spawn(Ball);
             int force = Random.Range(2000, 2500);
             Ball.GetComponent<Rigidbody>().AddForce(transform.TransformDirection(Vector3.forward) * force);
@@ -56,10 +56,10 @@ public class SpellSystem : NetworkBehaviour {
 
     private void ShieldCall()
     {
-        sEndRange = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z + 1f);
+        sEndRange = new Vector3(castPoint.transform.localPosition.x, castPoint.transform.localPosition.y, castPoint.transform.localPosition.z + 1f);
         if (ShieldMode && !shieldExpanding)
         {
-            Shield = Instantiate(pShield, gameObject.transform);
+            Shield = Instantiate(pShield, castPoint.transform);
             Shield.GetComponent<Rigidbody>().AddForce(transform.TransformDirection(Vector3.forward) * 150);
             shieldExpanding = true;
             sActiveTimer = Time.time + 5;

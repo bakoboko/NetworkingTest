@@ -79,6 +79,7 @@ GameObject:
   - component: {fileID: 143114810182971678}
   - component: {fileID: 114868286238809118}
   - component: {fileID: 114031480335078648}
+  - component: {fileID: 114533881250237572}
   m_Layer: 0
   m_Name: Vanilla Controller
   m_TagString: Player
@@ -337,6 +338,26 @@ MonoBehaviour:
   pBolt: {fileID: 1621288943075478, guid: cc37033f0d99e08468c5fab93745ba69, type: 2}
   LitForce: 1000
   pBall: {fileID: 1997773456177856, guid: 59d402626b03a3945b34a2f5c991f32a, type: 2}
+  castPoint: {fileID: 0}
+  pShield: {fileID: 1306646394042406, guid: 04c2cbd54524f87469efc8f50e6b6ce8, type: 2}
+  FireMode: 0
+  LitMode: 0
+  ShieldMode: 0
+--- !u!114 &114533881250237572
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1634477562934418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20dfb5782364bcc409d1c6722f82b889, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pBolt: {fileID: 1621288943075478, guid: cc37033f0d99e08468c5fab93745ba69, type: 2}
+  LitForce: 100
+  pBall: {fileID: 1997773456177856, guid: 59d402626b03a3945b34a2f5c991f32a, type: 2}
+  castPoint: {fileID: 1981413525145992, guid: 88f71ec0f3a319c429b79cf4ffc4a55c, type: 2}
   pShield: {fileID: 1306646394042406, guid: 04c2cbd54524f87469efc8f50e6b6ce8, type: 2}
   FireMode: 0
   LitMode: 0
