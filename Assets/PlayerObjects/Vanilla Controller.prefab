@@ -355,7 +355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pBolt: {fileID: 1621288943075478, guid: cc37033f0d99e08468c5fab93745ba69, type: 2}
-  LitForce: 100
+  LitForce: 600
   pBall: {fileID: 1997773456177856, guid: 59d402626b03a3945b34a2f5c991f32a, type: 2}
   castPoint: {fileID: 1981413525145992, guid: 88f71ec0f3a319c429b79cf4ffc4a55c, type: 2}
   pShield: {fileID: 1306646394042406, guid: 04c2cbd54524f87469efc8f50e6b6ce8, type: 2}

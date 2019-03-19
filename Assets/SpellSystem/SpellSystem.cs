@@ -33,25 +33,39 @@ public class SpellSystem : NetworkBehaviour {
     {
         if (LitMode  && !shieldExpanding)
         {
-            GameObject LitObj = Instantiate(pBolt, castPoint.transform.localPosition, castPoint.transform.localRotation);
-            NetworkServer.Spawn(LitObj);
-            LitObj.GetComponent<Rigidbody>().AddForce(transform.TransformDirection(Vector3.forward) * LitForce);
+
+            CmdSpawnLightning();
             LitMode = false;
         }
-    } 
+    }
 
-  
+    [Command]
+    private void CmdSpawnLightning()
+    {
+        GameObject LitObj = Instantiate(pBolt, castPoint.transform.position, castPoint.transform.localRotation);
+        LitObj.GetComponent<Rigidbody>().AddForce(transform.TransformDirection(Vector3.forward) * LitForce);
+        NetworkServer.Spawn(LitObj);
+    }
+
+
+
     private void FireBall()
     {
         if (!OnceInstance && FireMode && !shieldExpanding)
-        {
-            GameObject Ball = Instantiate(pBall, castPoint.transform.position, castPoint.transform.localRotation);
-            NetworkServer.Spawn(Ball);
-            int force = Random.Range(2000, 2500);
-            Ball.GetComponent<Rigidbody>().AddForce(transform.TransformDirection(Vector3.forward) * force);
+        {        
+            CmdSpawnBall();
             OnceInstance = true;
             FireMode = false;
         }
+    }
+
+    [Command]
+    private void CmdSpawnBall()
+    {
+        GameObject Ball = Instantiate(pBall, castPoint.transform.position, castPoint.transform.localRotation);
+        int force = Random.Range(2000, 2500);
+        Ball.GetComponent<Rigidbody>().AddForce(transform.TransformDirection(Vector3.forward) * force);
+        NetworkServer.Spawn(Ball);
     }
 
     private void ShieldCall()
