@@ -9,7 +9,7 @@ public class SpellSystem : NetworkBehaviour {
     public float LitForce = 100;
 
     public GameObject pBall;
-    public static bool OnceInstance = false;
+    public bool OnceInstance = false;
 
     private Vector3 wandFirePoint = Vector3.zero;
     private Quaternion wandPointRotation;

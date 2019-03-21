@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class Force : MonoBehaviour {
+public class Force : NetworkBehaviour {
 
     public int Bouncecount = 0;
+    public GameObject player;
     private Rigidbody RB;
     float xForce = 0;
     bool Positive = false;
@@ -14,12 +16,22 @@ public class Force : MonoBehaviour {
     private void Awake()
     {
         RB = gameObject.GetComponent<Rigidbody>();
+
+        GameObject [] playersInScene = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach(GameObject i in playersInScene)
+        {
+            if (i.transform.parent == isLocalPlayer)
+            {
+                player = i;
+            }
+        }
     }
 
     void Update () {
         if (Bouncecount >= 3)
         {
-            SpellSystem.OnceInstance = false;
+            player.GetComponent<SpellSystem>().OnceInstance = false;
             Destroy(gameObject);  
         }
         if (!Positive)
