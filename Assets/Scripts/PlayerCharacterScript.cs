@@ -12,6 +12,8 @@ public class PlayerCharacterScript : NetworkBehaviour {
 
     private Vector3 move = Vector3.zero;
     private GameObject vrtk;
+    public GameObject wand;
+    public GameObject hand;
     private Camera fpsCamera;
     private Vector2 moveInput;
     private Vector2 look;
@@ -31,7 +33,7 @@ public class PlayerCharacterScript : NetworkBehaviour {
         spellSys = gameObject.GetComponentInChildren<SpellSystem>();
         vrtk = GameObject.FindGameObjectWithTag("VRKit");
         fpsCamera = Camera.main;
-
+        
         if (transform.parent != isLocalPlayer)
         {
             fpsCamera.enabled = false;
@@ -45,9 +47,10 @@ public class PlayerCharacterScript : NetworkBehaviour {
             recognizer = new KeywordRecognizer(keywords);
             recognizer.OnPhraseRecognized += SpeechRecognition;
             recognizer.Start();
+            AttachWandToHand();
             return;
         }
-
+        
 
     }
 
@@ -55,6 +58,22 @@ public class PlayerCharacterScript : NetworkBehaviour {
     void Update()
     {
         CheckAuthority();
+        WandInHandLock();
+    }
+
+    void AttachWandToHand()
+    {
+        hand = GameObject.FindGameObjectWithTag("hand");
+    }
+
+    void WandInHandLock()
+    {
+        if (hand !=null)
+        {
+            wand.transform.position = hand.transform.position + new Vector3 (0,-0.06f,0);
+            wand.transform.eulerAngles = hand.transform.eulerAngles - new Vector3(-37,0,0);
+        }
+        
     }
 
 
