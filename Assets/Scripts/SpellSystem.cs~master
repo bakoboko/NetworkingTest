@@ -10,6 +10,7 @@ public class SpellSystem : NetworkBehaviour {
 
     public GameObject pBall;
     public bool OnceInstance = false;
+    public bool shouldCast = false;
 
     private Vector3 wandFirePoint = Vector3.zero;
     private Quaternion wandPointRotation;
@@ -35,7 +36,8 @@ public class SpellSystem : NetworkBehaviour {
         {
 
             CmdSpawnLightning();
-            LitMode = false;
+            FireMode = false;
+            ShieldMode = false;
         }
     }
 
@@ -43,7 +45,7 @@ public class SpellSystem : NetworkBehaviour {
     private void CmdSpawnLightning()
     {
         GameObject LitObj = Instantiate(pBolt, castPoint.transform.position, castPoint.transform.localRotation);
-        LitObj.GetComponent<Rigidbody>().AddForce(transform.TransformDirection(Vector3.forward) * LitForce);
+        LitObj.GetComponent<Rigidbody>().AddForce(castPoint.transform.forward * LitForce);
         NetworkServer.Spawn(LitObj);
     }
 
@@ -55,7 +57,8 @@ public class SpellSystem : NetworkBehaviour {
         {        
             CmdSpawnBall();
             OnceInstance = true;
-            FireMode = false;
+            LitMode = false;
+            ShieldMode = false;
         }
     }
 
@@ -64,7 +67,7 @@ public class SpellSystem : NetworkBehaviour {
     {
         GameObject Ball = Instantiate(pBall, castPoint.transform.position, castPoint.transform.localRotation);
         int force = Random.Range(2000, 2500);
-        Ball.GetComponent<Rigidbody>().AddForce(transform.TransformDirection(Vector3.forward) * force);
+        Ball.GetComponent<Rigidbody>().AddForce(castPoint.transform.forward * force);
         NetworkServer.Spawn(Ball);
     }
 
@@ -77,7 +80,8 @@ public class SpellSystem : NetworkBehaviour {
             Shield.GetComponent<Rigidbody>().AddForce(transform.TransformDirection(Vector3.forward) * 150);
             shieldExpanding = true;
             sActiveTimer = Time.time + 5;
-            ShieldMode = false;
+            LitMode = false;
+            FireMode = false;
         }
         if (shieldExpanding)
         {
@@ -101,7 +105,7 @@ public class SpellSystem : NetworkBehaviour {
 
     private void GetInputs()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (shouldCast)
         {
             if (FireMode)
             {
@@ -118,6 +122,7 @@ public class SpellSystem : NetworkBehaviour {
 
                 ShieldCall();
             }
+            shouldCast = false;
         }
     }
 }
