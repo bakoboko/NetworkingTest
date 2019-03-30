@@ -12,10 +12,15 @@ public class PlayerCharacterScript : NetworkBehaviour {
 
     private Vector3 move = Vector3.zero;
     private GameObject vrtk;
+    public GameObject wand;
+    public GameObject wandColor;
+    public GameObject hand;
+    private GameObject spawnPoint1, spawnPoint2;
     private Camera fpsCamera;
     private Vector2 moveInput;
     private Vector2 look;
     private bool jumpTick;
+    public static bool spawnInUse;
     private KeywordRecognizer recognizer;
 
     private string[] keywords = new string[] { "fireball", "lightning","shield" };
@@ -31,6 +36,8 @@ public class PlayerCharacterScript : NetworkBehaviour {
         spellSys = gameObject.GetComponentInChildren<SpellSystem>();
         vrtk = GameObject.FindGameObjectWithTag("VRKit");
         fpsCamera = Camera.main;
+        spawnPoint1 = GameObject.Find("Spawn1");
+        spawnPoint2 = GameObject.Find("Spawn2");
 
         if (transform.parent != isLocalPlayer)
         {
@@ -39,22 +46,49 @@ public class PlayerCharacterScript : NetworkBehaviour {
         }
         else
         {
+            if (!spawnInUse)
+            {
+                player.transform.position = spawnPoint1.transform.position;
+                player.transform.rotation = spawnPoint1.transform.rotation;
+                spawnInUse = true;
+            }
+            else
+            {
+                player.transform.position = spawnPoint2.transform.position;
+                player.transform.rotation = spawnPoint2.transform.rotation;
+            }
+
             vrtk.gameObject.SetActive(true);
             vrtk.transform.parent = this.transform;
             vrtk.transform.position = player.transform.position;
             recognizer = new KeywordRecognizer(keywords);
             recognizer.OnPhraseRecognized += SpeechRecognition;
             recognizer.Start();
+            AttachWandToHand();
             return;
         }
-
-
     }
 
 
     void Update()
     {
         CheckAuthority();
+        WandInHandLock();
+    }
+
+    void AttachWandToHand()
+    {
+        hand = GameObject.FindGameObjectWithTag("hand");
+    }
+
+    void WandInHandLock()
+    {
+        if (hand !=null)
+        {
+            wand.transform.position = hand.transform.position + new Vector3 (0,-0.06f,0);
+            wand.transform.eulerAngles = hand.transform.eulerAngles - new Vector3(-37,0,0);
+        }
+        
     }
 
 
@@ -71,9 +105,9 @@ public class PlayerCharacterScript : NetworkBehaviour {
         }
     }
 
+
     void Movement()
     {
-       // transform.rotation = fpsCamera.transform.rotation;
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
@@ -113,30 +147,32 @@ public class PlayerCharacterScript : NetworkBehaviour {
         if (transform.parent == isLocalPlayer)
         {
             print(args.text);
+      
             if (args.text == "fireball")
             {
                 spellSys.FireMode = true;
                 spellSys.LitMode = false;
                 spellSys.ShieldMode = false;
+                wandColor.GetComponent<Renderer>().material.color = Color.red;
             }
             else if (args.text == "lightning")
             {
                 spellSys.LitMode = true;
                 spellSys.FireMode = false;
                 spellSys.ShieldMode = false;
+                wandColor.GetComponent<Renderer>().material.color = Color.yellow;
             }
             else if(args.text == "shield")
             {
                 spellSys.ShieldMode = true;
                 spellSys.FireMode = false;
                 spellSys.LitMode = false;
+                wandColor.GetComponent<Renderer>().material.color = Color.green;
             }
         }
 
 
     }
-
-
 
 
     void OnGUI()

@@ -11,6 +11,9 @@ TagManager:
   - VRKit
   - Ball
   - floor
+  - castPoint
+  - hand
+  - CastRadius
   layers:
   - Default
   - TransparentFX
