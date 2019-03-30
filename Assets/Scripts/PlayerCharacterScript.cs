@@ -13,13 +13,9 @@ public class PlayerCharacterScript : NetworkBehaviour {
     private Vector3 move = Vector3.zero;
     private GameObject vrtk;
     public GameObject wand;
-<<<<<<< HEAD
     public GameObject wandColor;
     public GameObject hand;
     private GameObject spawnPoint1, spawnPoint2;
-=======
-    public GameObject hand;
->>>>>>> master
     private Camera fpsCamera;
     private Vector2 moveInput;
     private Vector2 look;
@@ -40,13 +36,9 @@ public class PlayerCharacterScript : NetworkBehaviour {
         spellSys = gameObject.GetComponentInChildren<SpellSystem>();
         vrtk = GameObject.FindGameObjectWithTag("VRKit");
         fpsCamera = Camera.main;
-<<<<<<< HEAD
         spawnPoint1 = GameObject.Find("Spawn1");
         spawnPoint2 = GameObject.Find("Spawn2");
 
-=======
-        
->>>>>>> master
         if (transform.parent != isLocalPlayer)
         {
             fpsCamera.enabled = false;
@@ -75,11 +67,6 @@ public class PlayerCharacterScript : NetworkBehaviour {
             AttachWandToHand();
             return;
         }
-<<<<<<< HEAD
-=======
-        
-
->>>>>>> master
     }
 
 
