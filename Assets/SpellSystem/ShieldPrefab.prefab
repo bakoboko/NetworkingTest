@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 54185850178974470}
   - component: {fileID: 114676389726199566}
   - component: {fileID: 114469011241134144}
+  - component: {fileID: 114016248182618886}
   m_Layer: 0
   m_Name: ShieldPrefab
   m_TagString: floor
@@ -116,6 +117,20 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114016248182618886
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1306646394042406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e314e0f0d4590e4da854892e441815b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Bouncecount: 0
+  minusBy: 5
+  Limit: 25
 --- !u!114 &114469011241134144
 MonoBehaviour:
   m_ObjectHideFlags: 1

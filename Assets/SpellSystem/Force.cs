@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class Force : NetworkBehaviour {
 
     public int Bouncecount = 0;
-    public GameObject player;
+    GameObject player;
     private Rigidbody RB;
     float xForce = 0;
     bool Positive = false;

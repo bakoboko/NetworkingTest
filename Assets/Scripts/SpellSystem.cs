@@ -77,13 +77,19 @@ public class SpellSystem : NetworkBehaviour {
         sEndRange = new Vector3(castPoint.transform.localPosition.x, castPoint.transform.localPosition.y, castPoint.transform.localPosition.z + 1f);
         if (ShieldMode && !shieldExpanding)
         {
-            Shield = Instantiate(pShield, castPoint.transform);
-            Shield.GetComponent<Rigidbody>().AddForce(transform.TransformDirection(Vector3.forward) * 150);
             shieldExpanding = true;
             sActiveTimer = Time.time + 5;
             LitMode = false;
             FireMode = false;
         }   
+    }
+
+    [Command]
+    void CmdSpawnShield()
+    {
+        Shield = Instantiate(pShield, castPoint.transform);
+        Shield.GetComponent<Rigidbody>().AddForce(transform.TransformDirection(Vector3.forward) * 150);
+        NetworkServer.Spawn(Shield);
     }
 
     private void ExpandShield()

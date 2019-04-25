@@ -15,7 +15,7 @@ public class PlayerCharacterScript : NetworkBehaviour {
     public GameObject wand;
     public GameObject wandColor;
     public GameObject hand;
-    private GameObject spawnPoint1, spawnPoint2;
+    private GameObject spawnPoint1, spawnPoint2, manager;
     private Camera fpsCamera;
     private Vector2 moveInput;
     private Vector2 look;
@@ -29,30 +29,29 @@ public class PlayerCharacterScript : NetworkBehaviour {
     public float gravity;
     public float playerHealth;
 
-
+    private void Awake()
+    {
+        manager = GameObject.Find("Manager");
+    }
     public override void OnStartAuthority()
     {
         player = gameObject.GetComponent<CharacterController>();
         spellSys = gameObject.GetComponentInChildren<SpellSystem>();
         vrtk = GameObject.FindGameObjectWithTag("VRKit");
         fpsCamera = Camera.main;
-        spawnPoint1 = GameObject.Find("Spawn1");
-        spawnPoint2 = GameObject.Find("Spawn2");
+        spawnPoint1 = manager.GetComponent<VariableStorageMainGame>().spawn1;
+        spawnPoint2 = manager.GetComponent<VariableStorageMainGame>().spawn2;
 
-        if (transform.parent != isLocalPlayer)
+
+        if (isLocalPlayer || transform.parent == isLocalPlayer)
         {
-            fpsCamera.enabled = false;
-            vrtk.gameObject.SetActive(false);
-        }
-        else
-        {
-            if (!spawnInUse)
+            if (gameObject.name.Contains("One"))
             {
                 player.transform.position = spawnPoint1.transform.position;
-                player.transform.rotation = spawnPoint1.transform.rotation;
+                player.transform.LookAt(spawnPoint2.transform);
                 spawnInUse = true;
             }
-            else
+            if(gameObject.name.Contains("Two"))
             {
                 player.transform.position = spawnPoint2.transform.position;
                 player.transform.rotation = spawnPoint2.transform.rotation;
@@ -78,7 +77,7 @@ public class PlayerCharacterScript : NetworkBehaviour {
 
     void AttachWandToHand()
     {
-        hand = GameObject.FindGameObjectWithTag("hand");
+        hand = manager.GetComponent<VariableStorageMainGame>().hand;
     }
 
     void WandInHandLock()
@@ -96,7 +95,7 @@ public class PlayerCharacterScript : NetworkBehaviour {
     {
         if (hasAuthority)
         {
-            Movement();
+          
 
         }
         else
@@ -106,45 +105,10 @@ public class PlayerCharacterScript : NetworkBehaviour {
     }
 
 
-    void Movement()
-    {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-
-        moveInput = new Vector2(horizontal, vertical);
-
-        if (moveInput.sqrMagnitude > 1)
-        {
-            moveInput.Normalize();
-        }
-
-        Vector3 moveDirection = fpsCamera.transform.TransformDirection(transform.forward * moveInput.y + transform.right * moveInput.x);
-
-        move.x = moveDirection.x * moveSpeed;
-        move.z = moveDirection.z * moveSpeed;
-
-        if (player.isGrounded)
-        {
-            move.y = 0;
-            jumpTick = false;
-        }
-        else
-        {
-            move.y -= gravity * Time.deltaTime;
-        }
-
-        if (Input.GetButton("Jump") && jumpTick == false)
-        {
-            move.y = jumpForce;
-            jumpTick = true;
-        }
-
-        player.Move(move);
-    }
-
+   
     void SpeechRecognition(PhraseRecognizedEventArgs args)
     {
-        if (transform.parent == isLocalPlayer)
+        if (isLocalPlayer)
         {
             print(args.text);
       
