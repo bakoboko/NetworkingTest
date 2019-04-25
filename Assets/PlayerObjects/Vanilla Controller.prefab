@@ -528,6 +528,8 @@ MonoBehaviour:
   moveSpeed: 0.1
   jumpForce: 0.1
   gravity: 0.1
+  rotateWand: -25
+  wandHeight: -0.06
   playerHealth: 0
 --- !u!136 &136509179395768524
 CapsuleCollider:
